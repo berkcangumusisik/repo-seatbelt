@@ -1,0 +1,66 @@
+{
+  "name": "repo-seatbelt",
+  "version": "1.0.0",
+  "description": "A safety layer for AI coding agents before they touch your repo.",
+  "main": "dist/cli.js",
+  "bin": {
+    "repo-seatbelt": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "ai",
+    "safety",
+    "cli",
+    "developer-tools",
+    "claude",
+    "claude-code",
+    "cursor",
+    "codex",
+    "agents",
+    "ai-agents",
+    "security",
+    "repo-safety",
+    "ai-safety"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/berkcangumusisik/repo-seatbelt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/berkcangumusisik/repo-seatbelt/issues"
+  },
+  "homepage": "https://github.com/berkcangumusisik/repo-seatbelt#readme",
+  "dependencies": {
+    "boxen": "^5.1.2",
+    "chalk": "^4.1.2",
+    "cli-table3": "^0.6.3",
+    "commander": "^12.1.0",
+    "fast-glob": "^3.3.2",
+    "ora": "^5.4.1",
+    "picomatch": "^2.3.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/picomatch": "^2.3.4",
+    "@types/prompts": "^2.4.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,10 @@
+src/
+tsconfig.json
+.repo-seatbelt.json
+*.tsbuildinfo
+.eslintrc*
+.prettierrc*
+docs/
+tests/
+coverage/
+.github/
