@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "mode": "strict",
+  "language": "tr",
+  "projectType": "other",
+  "selectedTools": [],
+  "protectedFiles": [
+    ".env",
+    ".env.*",
+    "prisma/migrations/**",
+    "migrations/**",
+    "**/migrations/**"
+  ],
+  "approvalRequired": [
+    "auth/**",
+    "lib/auth/**",
+    "src/auth/**",
+    "app/auth/**",
+    "payment/**",
+    "lib/payment/**",
+    "src/payment/**",
+    "middleware.ts",
+    "middleware.js",
+    "stripe/**"
+  ],
+  "blockedCommands": [
+    "rm -rf",
+    "DROP TABLE",
+    "TRUNCATE",
+    "DELETE FROM",
+    "prisma migrate reset",
+    "prisma db push --force-reset",
+    "git push --force",
+    "git push -f",
+    "docker volume rm",
+    "vercel env rm",
+    "railway volume delete"
+  ],
+  "ignoredPaths": [],
+  "riskThresholds": {
+    "low": 60,
+    "medium": 40,
+    "high": 0
+  },
+  "presets": []
+}

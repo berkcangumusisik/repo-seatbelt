@@ -7,11 +7,16 @@ const WIDTH = 54;
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
+function upperLabel(s: string): string {
+  const lang = getLang();
+  return lang === 'tr' ? s.toLocaleUpperCase('tr-TR') : s.toUpperCase();
+}
+
 export function divider(label?: string): void {
   if (label) {
     console.log();
     console.log(chalk.dim('  ─────────────────────────────────────────────────────'));
-    console.log(chalk.bold.white('  ' + label.toUpperCase()));
+    console.log(chalk.bold.white('  ' + upperLabel(label)));
     console.log(chalk.dim('  ─────────────────────────────────────────────────────'));
   } else {
     console.log(chalk.dim('  ─────────────────────────────────────────────────────'));
@@ -340,7 +345,7 @@ export function printDoctorResult(result: ScanResult): void {
     let step = 1;
 
     if (high.length > 0) {
-      console.log(chalk.red(chalk.bold(`  ${t('doctor.priorityHigh').toUpperCase()}`)));
+      console.log(chalk.red(chalk.bold(`  ${upperLabel(t('doctor.priorityHigh'))}`)));
       console.log();
       for (const item of high) {
         const translated = item.messageKey ? t(item.messageKey, item.messageParams) : null;
@@ -353,7 +358,7 @@ export function printDoctorResult(result: ScanResult): void {
     }
 
     if (medium.length > 0) {
-      console.log(chalk.yellow(chalk.bold(`  ${t('doctor.priorityMedium').toUpperCase()}`)));
+      console.log(chalk.yellow(chalk.bold(`  ${upperLabel(t('doctor.priorityMedium'))}`)));
       console.log();
       for (const item of medium) {
         const translated = item.messageKey ? t(item.messageKey, item.messageParams) : null;
@@ -366,7 +371,7 @@ export function printDoctorResult(result: ScanResult): void {
     }
 
     if (low.length > 0) {
-      console.log(chalk.green(chalk.bold(`  ${t('doctor.priorityLow').toUpperCase()}`)));
+      console.log(chalk.green(chalk.bold(`  ${upperLabel(t('doctor.priorityLow'))}`)));
       console.log();
       for (const item of low) {
         const translated = item.messageKey ? t(item.messageKey, item.messageParams) : null;

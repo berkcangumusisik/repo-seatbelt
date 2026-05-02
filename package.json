@@ -9,13 +9,14 @@
   "files": [
     "dist",
     "README.md",
+    "README.tr.md",
     "LICENSE"
   ],
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/cli.ts",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "keywords": [
@@ -27,13 +28,16 @@
     "claude-code",
     "cursor",
     "codex",
+    "gemini",
     "agents",
     "ai-agents",
     "security",
     "repo-safety",
-    "ai-safety"
+    "ai-safety",
+    "guardrails",
+    "pre-commit"
   ],
-  "author": "",
+  "author": "Berkcan Gumusisik (https://github.com/berkcangumusisik)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -44,9 +48,7 @@
   },
   "homepage": "https://github.com/berkcangumusisik/repo-seatbelt#readme",
   "dependencies": {
-    "boxen": "^5.1.2",
     "chalk": "^4.1.2",
-    "cli-table3": "^0.6.3",
     "commander": "^12.1.0",
     "fast-glob": "^3.3.2",
     "ora": "^5.4.1",

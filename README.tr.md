@@ -346,12 +346,14 @@ npx repo-seatbelt dashboard --lang tr
 
 `docs/repo-seatbelt-dashboard.html` adresinde bağımsız, çevrimdışı hazır bir HTML sayfası üretir:
 
-- Renk kodlamalı görsel puan göstergesi
-- Yüksek / orta / düşük risk kartları
-- Proje bilgileri paneli
+- Renk kodlamalı SVG halka puan göstergesi
+- Risk istatistik kartları (yüksek / orta / düşük sayıları)
+- Framework, auth, ödeme, test bilgilerini içeren proje paneli
 - AI kural durumu tablosu
 - Korunan dosyalar ve engellenen komutlar listeleri
-- Etkileşimli geri alma kontrol listesi
+- Etkileşimli geri alma kontrol listesi (tıklayarak işaretleme)
+- Mobil uyumlu tam duyarlı tasarım
+- Türkçe ve İngilizce çıktı (`--lang en` / `--lang tr`)
 
 Sunucu yok, CDN yok, izleme yok, dış istek yok.
 

@@ -21,7 +21,7 @@ export async function doctorCommand(options: DoctorOptions): Promise<void> {
   if (options.noColor) chalk.level = 0;
 
   if (!options.json) {
-    printHeader(t('doctor.title'), t('doctor.subtitle'));
+    printHeader(t('doctor.title'));
   }
 
   const spinner = options.json ? null : ora({

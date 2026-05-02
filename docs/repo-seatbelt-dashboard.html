@@ -1,126 +1,9 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import chalk from 'chalk';
-import ora from 'ora';
-import { t, setLang } from '../i18n';
-import { Lang, ScanResult, RiskItem } from '../types';
-import { readConfig } from '../config';
-import { runScan } from '../scanners';
-import { getScoreLabel } from '../scoring';
-import { printHeader } from '../display/renderer';
-
-interface DashboardOptions {
-  lang?: string;
-  output?: string;
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function generateDashboardHtml(result: ScanResult, lang: Lang): string {
-  const isEn = lang === 'en';
-  const score = result.score;
-
-  let scoreColor: string;
-  let scoreRing: string;
-  let scoreBg: string;
-  let scoreLabel: string;
-  let scoreEmoji: string;
-  if (score >= 80) {
-    scoreColor = '#22c55e'; scoreRing = '#16a34a'; scoreBg = 'rgba(34,197,94,.08)';
-    scoreLabel = isEn ? 'Safe' : 'Güvenli'; scoreEmoji = '✅';
-  } else if (score >= 60) {
-    scoreColor = '#eab308'; scoreRing = '#ca8a04'; scoreBg = 'rgba(234,179,8,.08)';
-    scoreLabel = isEn ? 'Needs Attention' : 'Dikkat Gerekiyor'; scoreEmoji = '⚠️';
-  } else if (score >= 40) {
-    scoreColor = '#f97316'; scoreRing = '#ea580c'; scoreBg = 'rgba(249,115,22,.08)';
-    scoreLabel = isEn ? 'Risky' : 'Riskli'; scoreEmoji = '🟠';
-  } else {
-    scoreColor = '#ef4444'; scoreRing = '#dc2626'; scoreBg = 'rgba(239,68,68,.08)';
-    scoreLabel = isEn ? 'Not AI Ready' : 'Hazır Değil'; scoreEmoji = '🔴';
-  }
-
-  const highRisks = result.risks.filter(r => r.level === 'high');
-  const mediumRisks = result.risks.filter(r => r.level === 'medium');
-  const lowRisks = result.risks.filter(r => r.level === 'low');
-
-  const rollbackItemsEn = [
-    'Review full git diff before committing',
-    'Revert risky files first (.env, migrations, auth)',
-    'Verify environment files are intact',
-    'Run full test suite',
-    'Run a fresh build',
-    'Manually verify auth and payment flows',
-    'Commit only after careful review',
-  ];
-  const rollbackItemsTr = [
-    "Commit etmeden önce tam git diff'i gözden geçirin",
-    'Riskli dosyaları önce geri alın (.env, migrations, auth)',
-    'Ortam dosyalarının sağlam olduğunu kontrol edin',
-    'Tüm test paketini çalıştırın',
-    'Yeni bir build alın',
-    'Kimlik doğrulama ve ödeme akışlarını manuel olarak doğrulayın',
-    'İncelemeden sonra commit yapın',
-  ];
-
-  const deg = Math.round(score * 3.6);
-
-  function riskList(risks: RiskItem[]): string {
-    if (risks.length === 0) {
-      return `<div class="empty-state">${isEn ? 'No issues in this category.' : 'Bu kategoride sorun yok.'}</div>`;
-    }
-    return risks.map(r => {
-      const msg = escapeHtml(r.message);
-      const rec = r.recommendation ? escapeHtml(r.recommendation) : null;
-      return `<div class="risk-item">
-        <div class="risk-msg">${msg}</div>
-        ${rec ? `<div class="risk-rec"><span class="arrow">→</span> ${rec}</div>` : ''}
-      </div>`;
-    }).join('');
-  }
-
-  function statusRows(): string {
-    const rows: [string, boolean][] = [
-      ['.repo-seatbelt.json', result.aiRulesStatus.hasConfig],
-      ['CLAUDE.md', result.aiRulesStatus.hasCLAUDEMD],
-      ['AGENTS.md', result.aiRulesStatus.hasAGENTSMD],
-      [isEn ? 'Cursor rules (.cursorrules)' : 'Cursor kuralları (.cursorrules)', result.aiRulesStatus.hasCursorRules],
-    ];
-    return rows.map(([label, ok]) => `
-      <div class="status-row">
-        <span class="status-icon ${ok ? 'ok' : 'fail'}">${ok ? '✓' : '✗'}</span>
-        <code class="status-label">${escapeHtml(label)}</code>
-        <span class="status-badge ${ok ? 'ok' : 'fail'}">${ok ? (isEn ? 'Found' : 'Bulundu') : (isEn ? 'Missing' : 'Eksik')}</span>
-      </div>`).join('');
-  }
-
-  function infoRow(label: string, value: string, highlight?: 'ok' | 'fail' | null): string {
-    const valClass = highlight ? ` class="${highlight === 'ok' ? 'badge-ok' : 'badge-fail'}"` : '';
-    return `<div class="info-row">
-      <span class="info-label">${label}</span>
-      <span class="info-val"${valClass}>${value}</span>
-    </div>`;
-  }
-
-  const generatedAt = new Date(result.timestamp).toLocaleString(lang === 'tr' ? 'tr-TR' : 'en-US');
-
-  const allRiskSections = [
-    { risks: highRisks, cls: 'high', dot: 'dot-red', label: isEn ? 'High Risk' : 'Yüksek Risk' },
-    { risks: mediumRisks, cls: 'medium', dot: 'dot-yellow', label: isEn ? 'Medium Risk' : 'Orta Risk' },
-    { risks: lowRisks, cls: 'low', dot: 'dot-green', label: isEn ? 'Low Risk' : 'Düşük Risk' },
-  ].filter(s => s.risks.length > 0);
-
-  return `<!DOCTYPE html>
-<html lang="${lang}">
+<!DOCTYPE html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${isEn ? 'repo-seatbelt - AI Safety Dashboard' : 'repo-seatbelt - AI Güvenlik Panosu'}</title>
+  <title>repo-seatbelt - AI Güvenlik Panosu</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -138,7 +21,7 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
       --orange:  #f97316;
       --red:     #ef4444;
       --blue:    #3b82f6;
-      --accent:  ${scoreColor};
+      --accent:  #22c55e;
       --r:       10px;
     }
 
@@ -211,28 +94,28 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
       gap: 36px;
       margin-bottom: 24px;
       flex-wrap: wrap;
-      background-image: radial-gradient(ellipse at 0% 0%, ${scoreBg} 0%, transparent 65%);
+      background-image: radial-gradient(ellipse at 0% 0%, rgba(34,197,94,.08) 0%, transparent 65%);
     }
 
     /* SVG ring gauge */
     .gauge-wrap { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
     .gauge-wrap svg { width: 110px; height: 110px; transform: rotate(-90deg); }
     .gauge-track { fill: none; stroke: var(--raised); stroke-width: 9; }
-    .gauge-fill  { fill: none; stroke: ${scoreColor}; stroke-width: 9; stroke-linecap: round;
-                   stroke-dasharray: 283; stroke-dashoffset: ${Math.round(283 - (283 * score / 100))};
-                   filter: drop-shadow(0 0 6px ${scoreColor}66); }
+    .gauge-fill  { fill: none; stroke: #22c55e; stroke-width: 9; stroke-linecap: round;
+                   stroke-dasharray: 283; stroke-dashoffset: 31;
+                   filter: drop-shadow(0 0 6px #22c55e66); }
     .gauge-text {
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
     }
-    .gauge-num { font-size: 26px; font-weight: 800; color: ${scoreColor}; line-height: 1; }
+    .gauge-num { font-size: 26px; font-weight: 800; color: #22c55e; line-height: 1; }
     .gauge-denom { font-size: 11px; color: var(--muted); }
 
     .score-body { flex: 1; min-width: 180px; }
     .score-label-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
     .score-label-row .emoji { font-size: 20px; }
-    .score-label-row h2 { font-size: 22px; font-weight: 800; color: ${scoreColor}; }
+    .score-label-row h2 { font-size: 22px; font-weight: 800; color: #22c55e; }
     .score-subtitle { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
     .pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .pill {
@@ -468,12 +351,12 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
       <span class="lock">🔒</span>
       <h1>repo-seatbelt</h1>
       <span class="sep">|</span>
-      <span class="subtitle">${isEn ? 'AI Safety Dashboard' : 'AI Güvenlik Panosu'}</span>
+      <span class="subtitle">AI Güvenlik Panosu</span>
     </div>
     <div class="topbar-right">
-      <span class="gen-time">${escapeHtml(generatedAt)}</span>
-      <button class="lang-btn" id="lang-btn" title="${isEn ? 'Re-run: repo-seatbelt dashboard --lang tr' : 'Re-run: repo-seatbelt dashboard --lang en'}">
-        ${isEn ? 'Türkçe' : 'English'}
+      <span class="gen-time">02.05.2026 13:12:45</span>
+      <button class="lang-btn" id="lang-btn" title="Re-run: repo-seatbelt dashboard --lang en">
+        English
       </button>
     </div>
   </div>
@@ -488,23 +371,23 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
           <circle class="gauge-fill"  cx="50" cy="50" r="45"/>
         </svg>
         <div class="gauge-text">
-          <span class="gauge-num">${score}</span>
+          <span class="gauge-num">89</span>
           <span class="gauge-denom">/ 100</span>
         </div>
       </div>
       <div class="score-body">
         <div class="score-label-row">
-          <span class="emoji">${scoreEmoji}</span>
-          <h2>${escapeHtml(getScoreLabel(score, lang))}</h2>
+          <span class="emoji">✅</span>
+          <h2>Güvenli</h2>
         </div>
-        <p class="score-subtitle">${isEn ? 'AI Safety Score' : 'AI Güvenlik Puanı'}</p>
+        <p class="score-subtitle">AI Güvenlik Puanı</p>
         <div class="pills">
-          ${result.projectInfo.framework.length > 0 ? `<span class="pill">${escapeHtml(result.projectInfo.framework.join(' · '))}</span>` : ''}
-          <span class="pill">${escapeHtml(result.projectInfo.packageManager)}</span>
-          ${result.config ? `<span class="pill">${escapeHtml(result.config.mode)} mode</span>` : ''}
-          ${result.projectInfo.databases.length > 0 ? `<span class="pill">${escapeHtml(result.projectInfo.databases.join(', '))}</span>` : ''}
-          ${result.projectInfo.authProviders.length > 0 ? `<span class="pill">${escapeHtml(result.projectInfo.authProviders.join(', '))}</span>` : ''}
-          ${result.projectInfo.paymentProviders.length > 0 ? `<span class="pill">${escapeHtml(result.projectInfo.paymentProviders.join(', '))}</span>` : ''}
+          <span class="pill">TypeScript</span>
+          <span class="pill">npm</span>
+          <span class="pill">strict mode</span>
+          
+          
+          <span class="pill">İyzico, PayTR, Moka</span>
         </div>
       </div>
     </div>
@@ -514,22 +397,22 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
       <div class="stat-card high">
         <span class="stat-icon">🔴</span>
         <div class="stat-body">
-          <div class="stat-num">${highRisks.length}</div>
-          <div class="stat-label">${isEn ? 'High Risk' : 'Yüksek Risk'}</div>
+          <div class="stat-num">2</div>
+          <div class="stat-label">Yüksek Risk</div>
         </div>
       </div>
       <div class="stat-card medium">
         <span class="stat-icon">🟡</span>
         <div class="stat-body">
-          <div class="stat-num">${mediumRisks.length}</div>
-          <div class="stat-label">${isEn ? 'Medium Risk' : 'Orta Risk'}</div>
+          <div class="stat-num">1</div>
+          <div class="stat-label">Orta Risk</div>
         </div>
       </div>
       <div class="stat-card low">
         <span class="stat-icon">🟢</span>
         <div class="stat-body">
-          <div class="stat-num">${lowRisks.length}</div>
-          <div class="stat-label">${isEn ? 'Low Risk' : 'Düşük Risk'}</div>
+          <div class="stat-num">1</div>
+          <div class="stat-label">Düşük Risk</div>
         </div>
       </div>
     </div>
@@ -538,77 +421,166 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
     <div class="grid-2">
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="dot dot-blue"></span>${isEn ? 'Project Info' : 'Proje Bilgileri'}</div>
+          <div class="card-title"><span class="dot dot-blue"></span>Proje Bilgileri</div>
         </div>
-        ${infoRow(isEn ? 'Framework' : 'Framework', escapeHtml(result.projectInfo.framework.join(', ') || (isEn ? 'Unknown' : 'Bilinmiyor')))}
-        ${infoRow(isEn ? 'Package Manager' : 'Paket Yöneticisi', escapeHtml(result.projectInfo.packageManager))}
-        ${infoRow(isEn ? 'Database' : 'Veritabanı', escapeHtml(result.projectInfo.databases.join(', ') || (isEn ? 'None' : 'Yok')))}
-        ${infoRow(isEn ? 'Auth' : 'Kimlik Doğrulama', escapeHtml(result.projectInfo.authProviders.join(', ') || (isEn ? 'None' : 'Yok')))}
-        ${infoRow(isEn ? 'Payments' : 'Ödeme', escapeHtml(result.projectInfo.paymentProviders.join(', ') || (isEn ? 'None' : 'Yok')))}
-        ${infoRow(isEn ? 'Safety Mode' : 'Güvenlik Modu', escapeHtml(result.config?.mode ?? (isEn ? 'Not configured' : 'Yapılandırılmamış')))}
-        ${infoRow(isEn ? 'Tests' : 'Testler', result.projectInfo.hasTests ? '✓' : '✗', result.projectInfo.hasTests ? 'ok' : 'fail')}
-        ${infoRow('README', result.projectInfo.hasReadme ? '✓' : '✗', result.projectInfo.hasReadme ? 'ok' : 'fail')}
+        <div class="info-row">
+      <span class="info-label">Framework</span>
+      <span class="info-val">TypeScript</span>
+    </div>
+        <div class="info-row">
+      <span class="info-label">Paket Yöneticisi</span>
+      <span class="info-val">npm</span>
+    </div>
+        <div class="info-row">
+      <span class="info-label">Veritabanı</span>
+      <span class="info-val">Yok</span>
+    </div>
+        <div class="info-row">
+      <span class="info-label">Kimlik Doğrulama</span>
+      <span class="info-val">Yok</span>
+    </div>
+        <div class="info-row">
+      <span class="info-label">Ödeme</span>
+      <span class="info-val">İyzico, PayTR, Moka</span>
+    </div>
+        <div class="info-row">
+      <span class="info-label">Güvenlik Modu</span>
+      <span class="info-val">strict</span>
+    </div>
+        <div class="info-row">
+      <span class="info-label">Testler</span>
+      <span class="info-val" class="badge-fail">✗</span>
+    </div>
+        <div class="info-row">
+      <span class="info-label">README</span>
+      <span class="info-val" class="badge-ok">✓</span>
+    </div>
       </div>
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="dot dot-blue"></span>${isEn ? 'AI Rules Status' : 'AI Kural Durumu'}</div>
+          <div class="card-title"><span class="dot dot-blue"></span>AI Kural Durumu</div>
         </div>
-        ${statusRows()}
+        
+      <div class="status-row">
+        <span class="status-icon ok">✓</span>
+        <code class="status-label">.repo-seatbelt.json</code>
+        <span class="status-badge ok">Bulundu</span>
+      </div>
+      <div class="status-row">
+        <span class="status-icon ok">✓</span>
+        <code class="status-label">CLAUDE.md</code>
+        <span class="status-badge ok">Bulundu</span>
+      </div>
+      <div class="status-row">
+        <span class="status-icon ok">✓</span>
+        <code class="status-label">AGENTS.md</code>
+        <span class="status-badge ok">Bulundu</span>
+      </div>
+      <div class="status-row">
+        <span class="status-icon fail">✗</span>
+        <code class="status-label">Cursor kuralları (.cursorrules)</code>
+        <span class="status-badge fail">Eksik</span>
+      </div>
       </div>
     </div>
 
     <!-- Risk details -->
-    ${result.risks.length === 0 ? `
-    <div class="all-clear">
-      <div class="big-icon">✅</div>
-      <h3>${isEn ? 'No risks detected!' : 'Risk tespit edilmedi!'}</h3>
-      <p>${isEn ? 'Your repository looks safe for AI agents.' : "Deponuz AI agent'lar için güvenli görünüyor."}</p>
-    </div>` : ''}
+    
 
-    ${allRiskSections.map(({ risks, cls, dot, label }) => `
+    
     <div class="card">
       <div class="card-header">
-        <div class="card-title"><span class="dot ${dot}"></span>${label}</div>
-        <span class="count-badge">${risks.length}</span>
+        <div class="card-title"><span class="dot dot-red"></span>Yüksek Risk</div>
+        <span class="count-badge">2</span>
       </div>
-      ${riskList(risks)}
-    </div>`).join('')}
+      <div class="risk-item">
+        <div class="risk-msg">Auth-related files found but not in approvalRequired</div>
+        <div class="risk-rec"><span class="arrow">→</span> Add auth folder to approvalRequired</div>
+      </div><div class="risk-item">
+        <div class="risk-msg">Payment-related files found but not in approvalRequired</div>
+        <div class="risk-rec"><span class="arrow">→</span> Add payment folder to approvalRequired</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="dot dot-yellow"></span>Orta Risk</div>
+        <span class="count-badge">1</span>
+      </div>
+      <div class="risk-item">
+        <div class="risk-msg">package.json script may be dangerous: &quot;clean: rm -rf dist&quot;</div>
+        
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="dot dot-green"></span>Düşük Risk</div>
+        <span class="count-badge">1</span>
+      </div>
+      <div class="risk-item">
+        <div class="risk-msg">No test files detected - risky for AI-assisted changes</div>
+        <div class="risk-rec"><span class="arrow">→</span> Add tests before letting AI agents modify your code</div>
+      </div>
+    </div>
 
     <!-- Protected files + Blocked commands -->
-    ${(result.config && (result.config.protectedFiles.length > 0 || result.config.blockedCommands.length > 0)) ? `
+    
     <div class="grid-2">
-      ${result.config.protectedFiles.length > 0 ? `
+      
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="dot dot-red"></span>${isEn ? 'Protected Files' : 'Korunan Dosyalar'}</div>
-          <span class="count-badge">${result.config.protectedFiles.length}</span>
+          <div class="card-title"><span class="dot dot-red"></span>Korunan Dosyalar</div>
+          <span class="count-badge">5</span>
         </div>
-        ${result.config.protectedFiles.map(f => `<div class="list-item"><code>${escapeHtml(f)}</code></div>`).join('')}
-      </div>` : ''}
-      ${result.config.blockedCommands.length > 0 ? `
+        <div class="list-item"><code>.env</code></div><div class="list-item"><code>.env.*</code></div><div class="list-item"><code>prisma/migrations/**</code></div><div class="list-item"><code>migrations/**</code></div><div class="list-item"><code>**/migrations/**</code></div>
+      </div>
+      
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="dot dot-red"></span>${isEn ? 'Blocked Commands' : 'Engellenen Komutlar'}</div>
-          <span class="count-badge">${result.config.blockedCommands.length}</span>
+          <div class="card-title"><span class="dot dot-red"></span>Engellenen Komutlar</div>
+          <span class="count-badge">11</span>
         </div>
-        ${result.config.blockedCommands.map(c => `<div class="list-item"><code>${escapeHtml(c)}</code></div>`).join('')}
-      </div>` : ''}
-    </div>` : ''}
+        <div class="list-item"><code>rm -rf</code></div><div class="list-item"><code>DROP TABLE</code></div><div class="list-item"><code>TRUNCATE</code></div><div class="list-item"><code>DELETE FROM</code></div><div class="list-item"><code>prisma migrate reset</code></div><div class="list-item"><code>prisma db push --force-reset</code></div><div class="list-item"><code>git push --force</code></div><div class="list-item"><code>git push -f</code></div><div class="list-item"><code>docker volume rm</code></div><div class="list-item"><code>vercel env rm</code></div><div class="list-item"><code>railway volume delete</code></div>
+      </div>
+    </div>
 
     <!-- Rollback Checklist -->
     <div class="card">
       <div class="card-header">
-        <div class="card-title"><span class="dot dot-muted"></span>${isEn ? 'Rollback Checklist' : 'Geri Alma Kontrol Listesi'}</div>
+        <div class="card-title"><span class="dot dot-muted"></span>Geri Alma Kontrol Listesi</div>
       </div>
       <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">
-        ${isEn ? 'Run through these before committing AI-generated changes.' : 'AI tarafından üretilen değişiklikleri commit etmeden önce bunları kontrol edin.'}
+        AI tarafından üretilen değişiklikleri commit etmeden önce bunları kontrol edin.
       </p>
       <div class="checklist" id="checklist">
-        ${(isEn ? rollbackItemsEn : rollbackItemsTr).map((item, i) => `
-        <div class="check-item" id="ci-${i}" onclick="toggleCheck(${i})">
-          <div class="checkbox" id="cb-${i}"></div>
-          <span>${escapeHtml(item)}</span>
-        </div>`).join('')}
+        
+        <div class="check-item" id="ci-0" onclick="toggleCheck(0)">
+          <div class="checkbox" id="cb-0"></div>
+          <span>Commit etmeden önce tam git diff'i gözden geçirin</span>
+        </div>
+        <div class="check-item" id="ci-1" onclick="toggleCheck(1)">
+          <div class="checkbox" id="cb-1"></div>
+          <span>Riskli dosyaları önce geri alın (.env, migrations, auth)</span>
+        </div>
+        <div class="check-item" id="ci-2" onclick="toggleCheck(2)">
+          <div class="checkbox" id="cb-2"></div>
+          <span>Ortam dosyalarının sağlam olduğunu kontrol edin</span>
+        </div>
+        <div class="check-item" id="ci-3" onclick="toggleCheck(3)">
+          <div class="checkbox" id="cb-3"></div>
+          <span>Tüm test paketini çalıştırın</span>
+        </div>
+        <div class="check-item" id="ci-4" onclick="toggleCheck(4)">
+          <div class="checkbox" id="cb-4"></div>
+          <span>Yeni bir build alın</span>
+        </div>
+        <div class="check-item" id="ci-5" onclick="toggleCheck(5)">
+          <div class="checkbox" id="cb-5"></div>
+          <span>Kimlik doğrulama ve ödeme akışlarını manuel olarak doğrulayın</span>
+        </div>
+        <div class="check-item" id="ci-6" onclick="toggleCheck(6)">
+          <div class="checkbox" id="cb-6"></div>
+          <span>İncelemeden sonra commit yapın</span>
+        </div>
       </div>
     </div>
 
@@ -617,9 +589,9 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
   <div class="footer">
     <a href="https://github.com/berkcangumusisik/repo-seatbelt" target="_blank">repo-seatbelt</a>
     &nbsp;·&nbsp;
-    ${isEn ? 'Generated' : 'Oluşturuldu'}: ${escapeHtml(generatedAt)}
+    Oluşturuldu: 02.05.2026 13:12:45
     &nbsp;·&nbsp;
-    ${isEn ? 'Offline - no external requests' : 'Çevrimdışı - dış istek yok'}
+    Çevrimdışı - dış istek yok
   </div>
 
   <script>
@@ -631,51 +603,9 @@ function generateDashboardHtml(result: ScanResult, lang: Lang): string {
     }
 
     document.getElementById('lang-btn').addEventListener('click', function() {
-      alert('${isEn
-        ? 'Re-run: repo-seatbelt dashboard --lang tr'
-        : 'Re-run: repo-seatbelt dashboard --lang en'}');
+      alert('Re-run: repo-seatbelt dashboard --lang en');
     });
   </script>
 
 </body>
-</html>`;
-}
-
-export async function dashboardCommand(options: DashboardOptions): Promise<void> {
-  const cwd = process.cwd();
-  const config = readConfig(cwd);
-  const lang = ((options.lang as Lang) || config?.language || 'en') as Lang;
-  setLang(lang);
-
-  printHeader(t('dashboard.title'));
-
-  const spinner = ora({
-    text: chalk.dim(t('dashboard.generating')),
-    spinner: 'dots',
-    color: 'cyan',
-  }).start();
-
-  try {
-    const result = await runScan(cwd);
-    const html = generateDashboardHtml(result, lang);
-
-    const outputPath = options.output ?? path.join(cwd, 'docs', 'repo-seatbelt-dashboard.html');
-    const dir = path.dirname(outputPath);
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-
-    fs.writeFileSync(outputPath, html, 'utf-8');
-    spinner.stop();
-
-    console.log(chalk.green('  ✓  ') + t('dashboard.saved', { path: outputPath }));
-    console.log(chalk.dim('  →  ') + t('dashboard.open', { path: outputPath }));
-    console.log();
-  } catch (err) {
-    spinner.stop();
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error(chalk.red(`  ✗  ${t('errors.general', { message: msg })}`));
-    process.exit(1);
-  }
-}
+</html>

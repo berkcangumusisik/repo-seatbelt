@@ -347,12 +347,14 @@ npx repo-seatbelt dashboard --lang tr
 
 Generates `docs/repo-seatbelt-dashboard.html` - a self-contained, offline-ready HTML page with:
 
-- Visual score gauge with color coding
-- High / medium / low risk cards
-- Project info panel
+- SVG ring gauge with color-coded score
+- Risk stat cards (high / medium / low counts)
+- Project info panel with framework, auth, payments, tests
 - AI rules status table
 - Protected files and blocked commands lists
-- Interactive rollback checklist
+- Interactive rollback checklist (click to check off)
+- Fully responsive layout for mobile
+- English and Turkish output (`--lang tr`)
 
 No server, no CDN, no tracking, no external requests.
 
