@@ -41,7 +41,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/berkcangumusisik/repo-seatbelt.git"
+    "url": "git+https://github.com/berkcangumusisik/repo-seatbelt.git"
   },
   "bugs": {
     "url": "https://github.com/berkcangumusisik/repo-seatbelt/issues"
