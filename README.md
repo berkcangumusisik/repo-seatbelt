@@ -755,7 +755,13 @@ If `repo-seatbelt` saved your repo from a bad AI session:
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/chart?repos=berkcangumusisik/repo-seatbelt&type=date&legend=top-left)](https://www.star-history.com/?repos=berkcangumusisik%2Frepo-seatbelt&type=date&legend=top-left)
+<a href="https://www.star-history.com/?repos=berkcangumusisik%2Frepo-seatbelt&type=date&legend=bottom-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=berkcangumusisik/repo-seatbelt&type=date&theme=dark&legend=bottom-right" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=berkcangumusisik/repo-seatbelt&type=date&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=berkcangumusisik/repo-seatbelt&type=date&legend=bottom-right" />
+ </picture>
+</a>
 
 ---
 
