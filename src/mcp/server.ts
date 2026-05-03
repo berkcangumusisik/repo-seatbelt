@@ -195,7 +195,7 @@ function startServer(): void {
           sendResult(id, {
             protocolVersion: PROTOCOL_VERSION,
             capabilities: { tools: {} },
-            serverInfo: { name: 'repo-seatbelt', version: '1.0.0' },
+            serverInfo: { name: 'repo-seatbelt', version: '1.1.0' },
           });
           return;
 

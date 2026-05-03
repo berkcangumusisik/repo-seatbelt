@@ -19,7 +19,7 @@ import { updateCommand } from './commands/update';
 import { mcpCommand } from './commands/mcp';
 import { listPresets } from './presets';
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 
 const program = new Command();
 

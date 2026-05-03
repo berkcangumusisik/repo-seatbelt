@@ -1,6 +1,6 @@
 {
   "name": "repo-seatbelt",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A safety layer for AI coding agents before they touch your repo.",
   "main": "dist/cli.js",
   "bin": {
@@ -11,6 +11,7 @@
     "dist",
     "README.md",
     "README.tr.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
@@ -36,7 +37,14 @@
     "repo-safety",
     "ai-safety",
     "guardrails",
-    "pre-commit"
+    "pre-commit",
+    "mcp",
+    "model-context-protocol",
+    "windsurf",
+    "aider",
+    "cline",
+    "zed",
+    "github-actions"
   ],
   "author": "Berkcan Gumusisik (https://github.com/berkcangumusisik)",
   "license": "MIT",

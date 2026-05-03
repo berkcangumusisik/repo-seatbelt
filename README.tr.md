@@ -2,31 +2,31 @@
 
 # 🔒 repo-seatbelt
 
-### AI kodlama ajanları için güvenlik katmanı. Reponuza dokunmadan önce.
+### Yapay zekâ kodlama ajanları için güvenlik katmanı. Reponuza dokunmadan önce.
 
 [![npm version](https://img.shields.io/npm/v/repo-seatbelt?color=%230f172a&labelColor=%231e293b&style=flat-square)](https://www.npmjs.com/package/repo-seatbelt)
 [![npm downloads](https://img.shields.io/npm/dm/repo-seatbelt?color=%230f172a&labelColor=%231e293b&style=flat-square)](https://www.npmjs.com/package/repo-seatbelt)
-[![License: MIT](https://img.shields.io/badge/license-MIT-%230f172a?labelColor=%231e293b&style=flat-square)](LICENSE)
+[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-%230f172a?labelColor=%231e293b&style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-%230f172a?labelColor=%231e293b&style=flat-square)](package.json)
-[![MCP Hazır](https://img.shields.io/badge/MCP-haz%C4%B1r-%2310b981?labelColor=%231e293b&style=flat-square)](#mcp-server--%C3%A7al%C4%B1%C5%9Fma-zaman%C4%B1-koruma)
+[![MCP Hazır](https://img.shields.io/badge/MCP-haz%C4%B1r-%2310b981?labelColor=%231e293b&style=flat-square)](#mcp-sunucusu--%C3%A7al%C4%B1%C5%9Fma-an%C4%B1-koruma)
 [![Diller](https://img.shields.io/badge/diller-EN%20%2F%20TR-%230f172a?labelColor=%231e293b&style=flat-square)](README.md)
 
 <br/>
 
-**AI kodlama ajanları güçlüdür. Belki fazla güçlü.**
+**Yapay zekâ kodlama ajanları güçlüdür. Belki fazla güçlü.**
 
-`repo-seatbelt` projenizi tarar, riskli alanları tespit eder, **7 farklı AI aracı** için
-güvenlik kuralları üretir, **çalışma zamanı MCP koruma sunucusu** sağlar, **pre-commit hook**
-+ **GitHub Action** kurar ve reponuza 100 üzerinden bir **AI Güvenlik Skoru** verir — sizin
-dilinizde.
-
-<br/>
-
-> **AI dokunmadan önce, kemerini bağla.**
+`repo-seatbelt` projenizi tarar, riskli alanları tespit eder, **7 farklı yapay zekâ aracı**
+için güvenlik kuralları üretir, **çalışma anında devreye giren MCP koruma sunucusu** sağlar,
+**işlem öncesi git çengeli** ve **GitHub Actions iş akışı** kurar; reponuza 100 üzerinden
+bir **Yapay Zekâ Güvenlik Puanı** verir — anadilinizde.
 
 <br/>
 
-[Hızlı Başlangıç](#h%C4%B1zl%C4%B1-ba%C5%9Flang%C4%B1%C3%A7) · [Komutlar](#komutlar) · [MCP Server](#mcp-server--%C3%A7al%C4%B1%C5%9Fma-zaman%C4%B1-koruma) · [Presetler](#presetler) · [CI / Hooks](#cicd--git-hooks) · [Skor Sistemi](#ai-g%C3%BCvenlik-skoru) · [English](README.md)
+> **Yapay zekâ dokunmadan önce, kemerini bağla.**
+
+<br/>
+
+[Hızlı Başlangıç](#h%C4%B1zl%C4%B1-ba%C5%9Flang%C4%B1%C3%A7) · [Komutlar](#komutlar) · [MCP Sunucusu](#mcp-sunucusu--%C3%A7al%C4%B1%C5%9Fma-an%C4%B1-koruma) · [Hazır Şablonlar](#haz%C4%B1r-%C5%9Fablonlar) · [CI / Çengeller](#cicd--git-%C3%A7engelleri) · [Puan Sistemi](#yapay-zek%C3%A2-g%C3%BCvenlik-puan%C4%B1) · [English](README.md)
 
 </div>
 
@@ -37,47 +37,47 @@ dilinizde.
 1. [Neden var?](#neden-var)
 2. [Hızlı Başlangıç](#h%C4%B1zl%C4%B1-ba%C5%9Flang%C4%B1%C3%A7)
 3. [Ne elde edersiniz?](#ne-elde-edersiniz)
-4. [Desteklenen AI Araçları](#desteklenen-ai-ara%C3%A7lar%C4%B1)
+4. [Desteklenen Yapay Zekâ Araçları](#desteklenen-yapay-zek%C3%A2-ara%C3%A7lar%C4%B1)
 5. [Komutlar](#komutlar)
-6. [Presetler](#presetler)
-7. [MCP Server — Çalışma Zamanı Koruma](#mcp-server--%C3%A7al%C4%B1%C5%9Fma-zaman%C4%B1-koruma)
-8. [CI/CD & Git Hooks](#cicd--git-hooks)
-9. [Watch Modu](#watch-modu)
-10. [Audit Modu](#audit-modu)
-11. [AI Güvenlik Skoru](#ai-g%C3%BCvenlik-skoru)
-12. [Dashboard & Raporlar](#dashboard--raporlar)
-13. [Konfigürasyon Referansı](#konfig%C3%BCrasyon-referans%C4%B1)
-14. [JSON Çıktı](#json-%C3%A7%C4%B1kt%C4%B1)
+6. [Hazır Şablonlar](#haz%C4%B1r-%C5%9Fablonlar)
+7. [MCP Sunucusu — Çalışma Anı Koruma](#mcp-sunucusu--%C3%A7al%C4%B1%C5%9Fma-an%C4%B1-koruma)
+8. [CI/CD & Git Çengelleri](#cicd--git-%C3%A7engelleri)
+9. [İzleme Modu](#i%CC%87zleme-modu)
+10. [Geçmiş Denetimi](#ge%C3%A7mi%C5%9F-denetimi)
+11. [Yapay Zekâ Güvenlik Puanı](#yapay-zek%C3%A2-g%C3%BCvenlik-puan%C4%B1)
+12. [Pano & Raporlar](#pano--raporlar)
+13. [Yapılandırma Referansı](#yap%C4%B1land%C4%B1rma-referans%C4%B1)
+14. [JSON Çıktısı](#json-%C3%A7%C4%B1kt%C4%B1s%C4%B1)
 15. [Mimari](#mimari)
-16. [SSS](#sss)
+16. [Sıkça Sorulanlar](#s%C4%B1k%C3%A7a-sorulanlar)
 17. [Yol Haritası](#yol-haritas%C4%B1)
 18. [Katkıda Bulunma](#katk%C4%B1da-bulunma)
-19. [Star History](#star-history)
+19. [Yıldız Geçmişi](#y%C4%B1ld%C4%B1z-ge%C3%A7mi%C5%9Fi)
 20. [Lisans](#lisans)
 
 ---
 
 ## Neden var?
 
-Claude Code, Cursor, Codex, Gemini CLI, Windsurf, Aider, Cline, Zed gibi AI kodlama
-araçları gerçekten faydalı. Ama reponuzda neyin kutsal olduğunu bilmezler. Korkuluk
-olmadan bir ajan şunları yapabilir:
+Claude Code, Cursor, Codex, Gemini CLI, Windsurf, Aider, Cline ve Zed gibi yapay zekâ
+kodlama araçları gerçekten faydalıdır. Ama reponuzda neyin dokunulmaz olduğunu bilmezler.
+Korkuluk olmadan bir ajan şunları yapabilir:
 
 - 🔥 `.env` dosyanızı test değerleriyle ezebilir
-- 🔥 Geri gelmeyen migration dosyalarını silebilir
-- 🔥 Auth middleware'inizi "temizlemek için" yeniden yazabilir
-- 🔥 Production veritabanında `prisma migrate reset` çalıştırabilir
-- 🔥 Bir bug'ı düzeltmek için 12 yeni bağımlılık ekleyebilir
-- 🔥 "Tek string değiştir" dediğinizde 30 dosyayı refactor edebilir
+- 🔥 Geri getirilemeyecek veritabanı göç dosyalarını silebilir
+- 🔥 Kimlik doğrulama ara katmanını "temizlemek için" baştan yazabilir
+- 🔥 Üretim veritabanında `prisma migrate reset` çalıştırabilir
+- 🔥 Tek bir hatayı düzeltmek için 12 yeni bağımlılık ekleyebilir
+- 🔥 "Tek bir metni değiştir" dediğinizde 30 dosyayı baştan kurgulayabilir
 
-**`repo-seatbelt` bunu dört katmanlı bir savunmayla çözer:**
+**`repo-seatbelt` bu sorunu dört katmanlı bir savunmayla çözer:**
 
-| Katman | Ne yapar | Nerede çalışır |
-|--------|----------|---------------|
-| **1. Statik kurallar** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `.windsurfrules`, `CONVENTIONS.md`, `.clinerules`, `.rules` üretir; ajanlar oturum başında okur. | `npx repo-seatbelt rules` |
-| **2. Çalışma zamanı MCP koruması** | Ajanların karar anında çağırdığı canlı MCP sunucusu: `check_file_access`, `check_command`, `list_protections`. | `npx repo-seatbelt mcp` |
-| **3. Pre-commit hook** | Yüksek-riskli commit'leri geliştiricinin makinesinden çıkmadan engeller. | `npx repo-seatbelt install-hooks` |
-| **4. CI kapısı** | GitHub Action güvenlik skoru ile PR yorumu yazar ve high-risk diff'lerde fail eder. | `npx repo-seatbelt ci` |
+| Katman | Ne yapar | Nasıl çalıştırılır |
+|--------|----------|--------------------|
+| **1. Sabit kurallar** | `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `.windsurfrules`, `CONVENTIONS.md`, `.clinerules`, `.rules` üretir; ajanlar oturum başında okur. | `npx repo-seatbelt rules` |
+| **2. Çalışma anı MCP koruması** | Ajanların karar anında danıştığı canlı sunucu: `check_file_access`, `check_command`, `list_protections`. | `npx repo-seatbelt mcp` |
+| **3. İşlem öncesi git çengeli** | Yüksek riskli işlemleri (commit) geliştiricinin makinesinden çıkmadan engeller. | `npx repo-seatbelt install-hooks` |
+| **4. CI denetimi** | GitHub Actions iş akışı güvenlik puanını PR'a yorum olarak yazar; yüksek riskli değişikliklerde başarısız olur. | `npx repo-seatbelt ci` |
 
 ---
 
@@ -85,18 +85,18 @@ olmadan bir ajan şunları yapabilir:
 
 ```bash
 # Sıfır kurulum
-npx repo-seatbelt init                          # interaktif kurulum
-npx repo-seatbelt init --preset nextjs-stripe   # veya hazır preset uygula
+npx repo-seatbelt init                          # etkileşimli kurulum
+npx repo-seatbelt init --preset nextjs-stripe   # veya hazır şablon uygula
 
 # Günlük kullanım
-npx repo-seatbelt scan                          # AI Güvenlik Skoru + riskler
-npx repo-seatbelt diff                          # commit öncesi AI değişikliklerini incele
+npx repo-seatbelt scan                          # Güvenlik Puanı + riskler
+npx repo-seatbelt diff                          # işlem öncesi yapay zekâ değişikliklerini incele
 npx repo-seatbelt doctor                        # öncelikli aksiyon planı
 
 # Kilitle
-npx repo-seatbelt install-hooks                 # high-risk commit'leri engelle
-npx repo-seatbelt ci                            # GitHub Action ekle
-npx repo-seatbelt mcp --print                   # runtime MCP yapılandır
+npx repo-seatbelt install-hooks                 # yüksek riskli işlemleri engelle
+npx repo-seatbelt ci                            # GitHub Actions iş akışı kur
+npx repo-seatbelt mcp --print                   # MCP istemci ayarını göster
 ```
 
 ---
@@ -104,28 +104,28 @@ npx repo-seatbelt mcp --print                   # runtime MCP yapılandır
 ## Ne elde edersiniz?
 
 ```text
-.repo-seatbelt.json     ← makine-okur konfigürasyon (tek doğru kaynağı)
+.repo-seatbelt.json     ← makine okur yapılandırma (tek doğruluk kaynağı)
 CLAUDE.md               ← Claude Code için kurallar
 AGENTS.md               ← AGENTS.md uyumlu araçlar (Codex, Aider, Gemini)
 CONVENTIONS.md          ← Aider için kurallar
 .cursorrules            ← Cursor için kurallar
 .windsurfrules          ← Windsurf için kurallar
 .clinerules             ← Cline için kurallar
-.rules                  ← Zed AI asistanı için kurallar
-.git/hooks/pre-commit   ← (opsiyonel) high-risk commit'leri engeller
-.github/workflows/      ← (opsiyonel) PR yorumlu CI kapısı
+.rules                  ← Zed yapay zekâ asistanı için kurallar
+.git/hooks/pre-commit   ← (isteğe bağlı) yüksek riskli işlemleri engeller
+.github/workflows/      ← (isteğe bağlı) PR yorumlu CI denetimi
 docs/repo-seatbelt-report.md       ← markdown güvenlik raporu
-docs/repo-seatbelt-dashboard.html  ← interaktif HTML dashboard
+docs/repo-seatbelt-dashboard.html  ← etkileşimli HTML pano
 ```
 
-Artı: **Çalışma zamanı MCP sunucusu** — ajanlar oturum ortasında çağırabilir.
+Ayrıca: **çalışma anı MCP sunucusu** — ajanlar oturum sırasında ona başvurabilir.
 
 ---
 
-## Desteklenen AI Araçları
+## Desteklenen Yapay Zekâ Araçları
 
-| Araç | Kural dosyası | Generator | Runtime MCP |
-|------|--------------|-----------|------------|
+| Araç | Kural dosyası | Üretici | Çalışma anı MCP |
+|------|--------------|---------|----------------|
 | **Claude Code / Claude Desktop** | `CLAUDE.md` | ✅ | ✅ |
 | **Cursor** | `.cursorrules` | ✅ | — |
 | **Codex / ChatGPT** | `AGENTS.md` | ✅ | — |
@@ -135,8 +135,8 @@ Artı: **Çalışma zamanı MCP sunucusu** — ajanlar oturum ortasında çağı
 | **Cline** | `.clinerules` | ✅ | — |
 | **Zed AI** | `.rules` | ✅ | — |
 
-> MCP destekli her host (Claude Desktop, Claude Code, Continue.dev, vb.) repo-seatbelt
-> MCP sunucusu ile konuşabilir ve canlı, karar-anı koruma sağlayabilir.
+> MCP destekli her istemci (Claude Desktop, Claude Code, Continue.dev vb.) repo-seatbelt
+> sunucusuyla konuşabilir; karar anında canlı koruma sağlar.
 
 ---
 
@@ -146,28 +146,30 @@ Artı: **Çalışma zamanı MCP sunucusu** — ajanlar oturum ortasında çağı
 <summary><b><code>init</code></b> — projeyi başlat</summary>
 
 ```bash
-repo-seatbelt init                              # interaktif
-repo-seatbelt init --yes                        # interaktif olmayan, varsayılanlar
-repo-seatbelt init --preset nextjs-stripe       # preset uygula
+repo-seatbelt init                              # etkileşimli
+repo-seatbelt init --yes                        # soru sormadan, varsayılanlarla
+repo-seatbelt init --preset nextjs-stripe       # hazır şablon uygula
 repo-seatbelt init --lang tr                    # Türkçe çıktı
 ```
 
-`.repo-seatbelt.json`, `CLAUDE.md`, `AGENTS.md` (ve Cursor seçilirse `.cursorrules`) yazar.
+`.repo-seatbelt.json`, `CLAUDE.md`, `AGENTS.md` (ve Cursor seçilirse `.cursorrules`)
+oluşturur.
 
 </details>
 
 <details>
-<summary><b><code>scan</code></b> — AI Güvenlik Skoru + risk listesi</summary>
+<summary><b><code>scan</code></b> — Güvenlik Puanı ve risk listesi</summary>
 
 ```bash
 repo-seatbelt scan
-repo-seatbelt scan --json            # makine-okur
-repo-seatbelt scan --verbose         # tüm detaylar
-repo-seatbelt scan --no-color        # log için renk yok
+repo-seatbelt scan --json            # makine okur
+repo-seatbelt scan --verbose         # tüm ayrıntılar
+repo-seatbelt scan --no-color        # kayıt için renksiz çıktı
 ```
 
-Framework, paket yöneticisi, veritabanı, auth/ödeme sağlayıcıları, env hijyeni, prod
-yapılandırması ve AI kural dosyalarını tespit eder. 0–100 skor + kategorize risk listesi.
+Çatı (framework), paket yöneticisi, veritabanı, kimlik doğrulama ve ödeme sağlayıcılarını,
+çevre değişkeni hijyenini, üretim ayarlarını ve yapay zekâ kural dosyalarının varlığını
+inceler. 0–100 puan ve kategorilere ayrılmış risk listesi döner.
 
 </details>
 
@@ -179,154 +181,157 @@ repo-seatbelt doctor
 repo-seatbelt doctor --json
 ```
 
-`scan` ile aynı veriyi öncelikli yapılacaklar listesi olarak sunar. İlk kurulum için ideal.
+`scan` ile aynı veriyi öncelik sırasına dizilmiş yapılacaklar listesi olarak sunar.
+İlk kurulum için idealdir.
 
 </details>
 
 <details>
-<summary><b><code>diff</code></b> — commit öncesi AI değişikliklerini incele</summary>
+<summary><b><code>diff</code></b> — işlem öncesi değişiklik incelemesi</summary>
 
 ```bash
 repo-seatbelt diff
-repo-seatbelt diff --json            # pre-commit hook'un kullandığı format
+repo-seatbelt diff --json            # git çengelinin kullandığı biçim
 ```
 
-Mevcut git değişikliklerini inceler. `.env` mod, auth/ödeme dokunuşu, migration değişikliği,
-yeni bağımlılık, büyük refactor ve test eksikliği işaretler. `info | low | medium | high`
-seviyesinde `overallRisk` döner.
+Mevcut git değişikliklerini inceler. `.env` düzenlemeleri, kimlik doğrulama ve ödeme
+dokunuşları, göç dosyası değişiklikleri, yeni bağımlılıklar, geniş kapsamlı yeniden
+düzenlemeler ve eksik test kapsamı için uyarı verir. `info | low | medium | high`
+düzeyinde genel risk döndürür.
 
 </details>
 
 <details>
-<summary><b><code>rules</code></b> — AI kural dosyalarını üret</summary>
+<summary><b><code>rules</code></b> — kural dosyalarını üret</summary>
 
 ```bash
-repo-seatbelt rules                                    # interaktif seçici
-repo-seatbelt rules --all                              # 7 araç da
+repo-seatbelt rules                                    # etkileşimli seçici
+repo-seatbelt rules --all                              # 7 araca da
 repo-seatbelt rules --tool claude,cursor,windsurf      # virgülle ayır
-repo-seatbelt rules --tool aider                       # tek
-repo-seatbelt rules --json                             # tümü + JSON manifest
+repo-seatbelt rules --tool aider                       # tek araç
+repo-seatbelt rules --json                             # tümü + JSON özeti
 ```
 
-Mevcut dosyalar üzerine yazılmadan önce `*.bak` olarak yedeklenir.
+Üzerine yazılmadan önce mevcut dosyalar `*.bak` uzantısıyla yedeklenir.
 
 </details>
 
 <details>
-<summary><b><code>protect</code></b> — korunan path'leri yönet</summary>
+<summary><b><code>protect</code></b> — korunan yolları yönet</summary>
 
 ```bash
 repo-seatbelt protect                          # mevcut korumaları listele
-repo-seatbelt protect "config/secrets/**"      # glob ekle
+repo-seatbelt protect "config/secrets/**"      # desen ekle
 repo-seatbelt protect --json
 ```
 
 </details>
 
 <details>
-<summary><b><code>check-command</code></b> — shell komutunu doğrula</summary>
+<summary><b><code>check-command</code></b> — kabuk komutunu doğrula</summary>
 
 ```bash
 repo-seatbelt check-command "rm -rf node_modules"
 repo-seatbelt check-command "git push --force" --json
 ```
 
-`safe | dangerous` ve gerekçeleri döndürür. Built-in pattern'leri ve sizin
-`blockedCommands`'larınızı birleştirir.
+`safe | dangerous` sonucunu gerekçeleriyle döndürür. Yerleşik desenler ile sizin
+`blockedCommands` listenizi birlikte değerlendirir.
 
 </details>
 
 <details>
-<summary><b><code>install-hooks</code></b> — pre-commit koruması</summary>
+<summary><b><code>install-hooks</code></b> — işlem öncesi koruma</summary>
 
 ```bash
-repo-seatbelt install-hooks                   # git pre-commit hook kur
-repo-seatbelt install-hooks --force           # mevcut hook'u ez (.bak saklanır)
-repo-seatbelt install-hooks --uninstall       # hook'u kaldır
+repo-seatbelt install-hooks                   # git pre-commit çengelini kur
+repo-seatbelt install-hooks --force           # mevcut çengeli üzerine yaz (.bak alınır)
+repo-seatbelt install-hooks --uninstall       # çengeli kaldır
 ```
 
-Kurulan hook `repo-seatbelt diff --json` çalıştırır ve `overallRisk === "high"` olduğunda
-**commit'i engeller**. Gerektiğinde `git commit --no-verify` ile bypass edilebilir.
+Kurulan çengel `repo-seatbelt diff --json` çalıştırır; risk `high` ise işlemi (commit)
+**engeller**. Gerektiğinde `git commit --no-verify` ile geçilebilir.
 
 </details>
 
 <details>
-<summary><b><code>ci</code></b> — GitHub Actions workflow</summary>
+<summary><b><code>ci</code></b> — GitHub Actions iş akışı</summary>
 
 ```bash
-repo-seatbelt ci                              # .github/workflows/seatbelt.yml yazar
-repo-seatbelt ci --force                      # ez
-repo-seatbelt ci --output ./custom.yml        # özel path
+repo-seatbelt ci                              # .github/workflows/seatbelt.yml oluştur
+repo-seatbelt ci --force                      # üzerine yaz
+repo-seatbelt ci --output ./custom.yml        # özel yol
 ```
 
-Üretilen workflow:
+Üretilen iş akışı:
 
-- her push ve PR'da `scan` çalıştırır
-- PR'larda `diff` çalıştırır ve güvenlik skoru + bulgularla yorum yazar
-- diff `overallRisk === "high"` ise CI'yı **fail eder**
+- her gönderim ve PR'da `scan` çalıştırır
+- PR'larda `diff` çalıştırır ve güvenlik puanı + bulgularla yorum yazar
+- değişiklikler yüksek riskliyse CI'yi **başarısız sayar**
 
 </details>
 
 <details>
-<summary><b><code>watch</code></b> — repo geliştikçe kuralları otomatik güncelle</summary>
+<summary><b><code>watch</code></b> — kuralları otomatik güncel tut</summary>
 
 ```bash
-repo-seatbelt watch                           # 500ms debounce (varsayılan)
+repo-seatbelt watch                           # 500ms erteleme (varsayılan)
 repo-seatbelt watch --debounce 1500
 ```
 
-Yeni hassas klasörleri (`auth/`, `payment/`, `stripe/`, …) ve repo'da görünen `.env*`
-dosyalarını tespit eder, `.repo-seatbelt.json`'u günceller ve **var olan tüm kural
-dosyalarını yeniden üretir**. Sıfır ek bağımlılık — Node'un dahili `fs.watch`'unu kullanır.
+Yeni hassas klasörleri (`auth/`, `payment/`, `stripe/`, …) ve repo köküne eklenen
+`.env*` dosyalarını fark eder; `.repo-seatbelt.json`'u günceller ve **mevcut tüm
+kural dosyalarını yeniden üretir**. Ek bağımlılık yoktur — Node'un yerleşik `fs.watch`
+sistemini kullanır.
 
 </details>
 
 <details>
-<summary><b><code>audit</code></b> — git geçmişi adli incelemesi</summary>
+<summary><b><code>audit</code></b> — git geçmişi denetimi</summary>
 
 ```bash
-repo-seatbelt audit                                 # son 500 commit
+repo-seatbelt audit                                 # son 500 işlem
 repo-seatbelt audit --since "1 month ago"
 repo-seatbelt audit --limit 1000 --json
 ```
 
 Git geçmişinde şunları arar:
 
-- commit'lenmiş `.env` dosyaları
+- işleme alınmış `.env` dosyaları
 - dokunulmuş korunan dosyalar
-- commit subject'inde `blockedCommands` izleri
-- "büyük refactor" commit'leri (≥25 dosya)
+- işlem başlığında engelli komut izleri
+- "geniş kapsamlı yeniden düzenleme" işlemleri (≥25 dosya)
 
-Mevcut bir repoya `repo-seatbelt` adapte ederken, AI'nin (veya insanların) kilitlemeden
-önce neler yaptığını görmek için ideal.
+Mevcut bir repoya `repo-seatbelt`'i sonradan eklerken, kilitlemeden önce ne tür
+hareketlerin yaşandığını görmek için idealdir.
 
 </details>
 
 <details>
-<summary><b><code>update</code></b> — diff önizlemeli kural dosyası yeniden üretimi</summary>
+<summary><b><code>update</code></b> — kural dosyalarını farkla yenile</summary>
 
 ```bash
-repo-seatbelt update                          # diff göster, onay iste
+repo-seatbelt update                          # farkı göster, onay iste
 repo-seatbelt update --yes                    # sormadan uygula
-repo-seatbelt update --diff-only              # diff göster, yazma
+repo-seatbelt update --diff-only              # sadece farkı göster, yazma
 repo-seatbelt update --json
 ```
 
-`.repo-seatbelt.json`'dan tüm kural dosyalarını yeniden hesaplar ve `+N -M` özetleriyle
-örnek satırları yazdırır. Mevcut dosyalar `*.bak` olarak yedeklenir.
+`.repo-seatbelt.json` üzerinden tüm kural dosyalarını yeniden hesaplar; `+N -M`
+özetleri ve örnek satırlarla farkı yazdırır. Mevcut dosyalar `*.bak` olarak yedeklenir.
 
 </details>
 
 <details>
-<summary><b><code>mcp</code></b> — çalışma zamanı MCP sunucusu</summary>
+<summary><b><code>mcp</code></b> — çalışma anı MCP sunucusu</summary>
 
 ```bash
 repo-seatbelt mcp                             # stdio MCP sunucusunu çalıştır
-repo-seatbelt mcp --print                     # client config snippet'i göster
+repo-seatbelt mcp --print                     # istemci yapılandırma örneğini göster
 repo-seatbelt mcp --print --json
 ```
 
-Detaylar için: [MCP Server](#mcp-server--%C3%A7al%C4%B1%C5%9Fma-zaman%C4%B1-koruma).
+Ayrıntılar için: [MCP Sunucusu](#mcp-sunucusu--%C3%A7al%C4%B1%C5%9Fma-an%C4%B1-koruma).
 
 </details>
 
@@ -334,7 +339,7 @@ Detaylar için: [MCP Server](#mcp-server--%C3%A7al%C4%B1%C5%9Fma-zaman%C4%B1-kor
 <summary><b><code>badge</code></b> · <b><code>report</code></b> · <b><code>dashboard</code></b></summary>
 
 ```bash
-repo-seatbelt badge                           # son scan'den README badge
+repo-seatbelt badge                           # son taramadan README rozeti
 repo-seatbelt badge --score 92 --json
 repo-seatbelt report                          # docs/repo-seatbelt-report.md
 repo-seatbelt dashboard                       # docs/repo-seatbelt-dashboard.html
@@ -344,44 +349,46 @@ repo-seatbelt dashboard                       # docs/repo-seatbelt-dashboard.htm
 
 ---
 
-## Presetler
+## Hazır Şablonlar
 
-Tekrarlanan işten kurtulun. Stack'inizde neyin hassas olduğunu bilen bir preset uygulayın.
+Tekrarlayan ayar işinden kurtulun. Teknoloji yığınınızda neyin hassas olduğunu
+bilen bir hazır şablon uygulayın.
 
-| Preset | Ne ekler |
+| Şablon | Ne ekler |
 |--------|----------|
-| `nextjs-stripe` | `prisma/schema.prisma`, `.env.local`, `.env.production` korur. Stripe webhook handler'ları, `app/api/auth/**`, `next.config.*` onay-gateler. Prod'a karşı `stripe trigger` engeller. |
-| `django` | `**/migrations/**`, `settings/production.py` korur. `auth/`, `payments/`, `manage.py` onay-gateler. `manage.py flush` ve `reset_db` engeller. |
+| `nextjs-stripe` | `prisma/schema.prisma`, `.env.local`, `.env.production` korur. Stripe ödeme bildirimleri (webhook), `app/api/auth/**`, `next.config.*` için onay zorunluluğu koyar. Üretime karşı `stripe trigger` engeller. |
+| `django` | `**/migrations/**`, `settings/production.py` korur. `auth/`, `payments/`, `manage.py` için onay ister. `manage.py flush` ve `reset_db` engeller. |
 | `rails` | `db/migrate/**`, `db/schema.rb`, `config/credentials.yml.enc`, `config/master.key` korur. `rails db:drop`/`db:reset` engeller. |
 | `expo` | `app.json`, `eas.json`, `google-services.json`, `GoogleService-Info.plist` korur. `eas build --profile production`, `expo publish` engeller. |
-| `monorepo` | `turbo.json`, `nx.json`, `pnpm-workspace.yaml`, `packages/*/.env*` için workspace-bilinçli koruma. |
+| `monorepo` | `turbo.json`, `nx.json`, `pnpm-workspace.yaml`, `packages/*/.env*` için çalışma alanına duyarlı koruma ekler. |
 | `fastapi` | `alembic/versions/**`, `.env` korur. `alembic downgrade base` engeller. |
 
 ```bash
 npx repo-seatbelt init --preset nextjs-stripe
 ```
 
-> Presetler eklemelidir — config'inizi değiştirmek yerine birleştirir.
+> Hazır şablonlar üst üste eklemelidir — yapılandırmanızın yerine geçmez, üzerine
+> birleşir.
 
 ---
 
-## MCP Server — Çalışma Zamanı Koruma
+## MCP Sunucusu — Çalışma Anı Koruma
 
-Statik kural dosyaları yalnızca ajan onları okursa işe yarar. **MCP sunucusu**, AI ajanlarının
-(Claude Desktop, Claude Code, Continue.dev, herhangi bir MCP host'u) **karar anında**
-soracağı canlı bir JSON-RPC servisidir:
+Sabit kural dosyaları yalnızca ajan onları okursa işe yarar. **MCP sunucusu**, yapay
+zekâ ajanlarının (Claude Desktop, Claude Code, Continue.dev ve diğer MCP istemcileri)
+**karar anında** soracağı canlı bir JSON-RPC servisidir:
 
 > *"Bu dosyayı düzenlemem güvenli mi?"*
-> *"Bu shell komutu bu repoda izinli mi?"*
+> *"Bu kabuk komutu bu repoda izinli mi?"*
 
-### Mevcut araçlar
+### Sunulan araçlar
 
-| Araç | Amaç |
-|------|------|
-| `check_file_access(path, operation)` | `allow` \| `ask` \| `block` döner. Her edit öncesi çağır. |
-| `check_command(command)` | `safe` \| `warn` \| `block` ve gerekçeler döner. Her shell çalıştırma öncesi çağır. |
-| `list_protections()` | Korunan dosyaları, onay-gerektiren glob'ları, engellenmiş komutları ve aktif modu listeler. |
-| `scan_repo()` | Tam güvenlik taraması yapar ve skor + riskleri döner. |
+| Araç | Amacı |
+|------|-------|
+| `check_file_access(path, operation)` | `allow` \| `ask` \| `block` döner. Her düzenleme öncesi çağırın. |
+| `check_command(command)` | `safe` \| `warn` \| `block` ve gerekçeleri döner. Her kabuk komutu öncesi çağırın. |
+| `list_protections()` | Korunan dosyaları, onay gerektiren desenleri, engelli komutları ve aktif modu listeler. |
+| `scan_repo()` | Tam güvenlik taraması yapar; puanı ve riskleri döner. |
 
 ### Claude Desktop'a bağlama
 
@@ -389,8 +396,8 @@ soracağı canlı bir JSON-RPC servisidir:
 npx repo-seatbelt mcp --print
 ```
 
-Yazılan snippet'i `~/Library/Application Support/Claude/claude_desktop_config.json`
-(macOS) veya platformunuzdaki eşdeğerine ekleyin:
+Çıktıyı `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
+dosyasına ya da işletim sisteminizdeki karşılığına ekleyin:
 
 ```json
 {
@@ -409,39 +416,40 @@ Yazılan snippet'i `~/Library/Application Support/Claude/claude_desktop_config.j
 claude mcp add repo-seatbelt -- npx -y repo-seatbelt-mcp
 ```
 
-### Manuel test
+### Elle deneme
 
 ```bash
 echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"check_command","arguments":{"command":"rm -rf /"}}}' \
   | npx repo-seatbelt mcp
 ```
 
-Şuna benzer cevap alırsınız:
+Şuna benzer bir yanıt alırsınız:
 
 ```json
 { "decision": "block", "reasons": ["Recursive force delete", "Matches blocked command: \"rm -rf\""] }
 ```
 
-> MCP sunucusu **bağımlılıksızdır** — stdio üzerinden minimal JSON-RPC, SDK yükü yok.
+> MCP sunucusu **bağımlılıksızdır** — stdio üzerinden çalışan en küçük JSON-RPC,
+> SDK yükü yoktur.
 
 ---
 
-## CI/CD & Git Hooks
+## CI/CD & Git Çengelleri
 
-### Pre-commit hook (lokal, push'tan önce)
+### İşlem öncesi çengel (yerel, gönderim öncesi)
 
 ```bash
 npx repo-seatbelt install-hooks
 ```
 
-Artık her `git commit` `repo-seatbelt diff --json` çalıştırır. `overallRisk === "high"`
-ise commit net bir mesajla engellenir. Bilinçli bypass:
+Artık her `git commit` `repo-seatbelt diff --json` çalıştırır. Risk `high` ise işlem
+açıklayıcı bir mesajla durdurulur. Bilinçli olarak geçmek için:
 
 ```bash
-git commit --no-verify -m "kasıtlı yüksek-riskli commit"
+git commit --no-verify -m "kasıtlı yüksek riskli işlem"
 ```
 
-### GitHub Action (uzak, her PR'da)
+### GitHub Actions iş akışı (uzak, her PR'da)
 
 ```bash
 npx repo-seatbelt ci
@@ -449,71 +457,72 @@ git add .github/workflows/seatbelt.yml
 git commit -m "chore: repo-seatbelt CI ekle"
 ```
 
-Workflow:
+İş akışı:
 
-1. Her push/PR'da `scan` çalıştırır
-2. PR'larda `diff` çalıştırır ve skor + en kritik bulgularla yapışkan yorum yazar
-3. Diff high-risk ise check'i **fail eder**
+1. Her gönderim/PR'da `scan` çalıştırır
+2. PR'larda `diff` çalıştırır; puan ve en kritik bulgularla kalıcı yorum bırakır
+3. Değişiklik yüksek riskliyse denetimi **başarısız sayar**
 
 Örnek PR yorumu:
 
 ```
 ## 🛡️ repo-seatbelt raporu
 
-**Skor:** 71/100 — 4 risk bulundu
+**Puan:** 71/100 — 4 risk bulundu
 
-### Yüksek-risk bulgular
+### Yüksek riskli bulgular
 - .env dosyası değiştirildi (`.env.production`)
-- Auth dosyaları değiştirildi (`src/auth/middleware.ts`)
+- Kimlik doğrulama dosyaları değiştirildi (`src/auth/middleware.ts`)
 
-**Diff riski:** high
+**Değişiklik riski:** high
 - .env dosyaları değiştirildi
-- Auth dosyaları değiştirildi
+- Kimlik doğrulama dosyaları değiştirildi
 ```
 
 ---
 
-## Watch Modu
+## İzleme Modu
 
 ```bash
 npx repo-seatbelt watch
 ```
 
-Repo büyüdükçe kural dosyalarınızı senkron tutar. Sürekli çalışır, dosya sistemi olaylarını
-debounce eder ve şunlar olduğunda `CLAUDE.md`, `AGENTS.md`, `.cursorrules` vb. otomatik
-yeniden üretir:
+Repo büyüdükçe kural dosyalarınızı eşzamanlı tutar. Sürekli çalışır, dosya sistemi
+olaylarını ertelemeyle bekletir ve şu durumlarda `CLAUDE.md`, `AGENTS.md`, `.cursorrules`
+gibi dosyaları kendiliğinden yeniden üretir:
 
-- repo kökünde veya `src/`, `app/`, `lib/` altında yeni `auth/`, `payment/`, `stripe/`, `billing/` klasörü çıkarsa
-- repo kökünde yeni `.env*` dosyası oluşursa
+- repo kökünde veya `src/`, `app/`, `lib/` altında yeni `auth/`, `payment/`, `stripe/`,
+  `billing/` klasörü ortaya çıkarsa
+- repo kökünde yeni bir `.env*` dosyası oluşursa
 
 Çıktı:
 
 ```
-  [14:23:01] Updated config + 5 rule file(s)
-     +approval: src/payment/**
-     +protected: .env.staging
+  [14:23:01] Yapılandırma + 5 kural dosyası güncellendi
+     +onay: src/payment/**
+     +korunan: .env.staging
 ```
 
 ---
 
-## Audit Modu
+## Geçmiş Denetimi
 
 ```bash
 npx repo-seatbelt audit --since "3 months ago"
 ```
 
-Git geçmişinde riskli pattern'leri tarar. Kullanım senaryoları:
+Git geçmişinde riskli kalıpları arar. Kullanım örnekleri:
 
-- Mevcut bir repoya `repo-seatbelt` adapte etme ve geçmiş hasarı görme
-- Bir kontratçının branch'inde güvenlik incelemesi
-- Postmortem için kanıt toplama
+- Mevcut bir repoya `repo-seatbelt` ekledikten sonra geçmişteki hasarı görmek
+- Bir dış geliştiricinin dalında güvenlik incelemesi yapmak
+- Olay sonrası inceleme (postmortem) için kanıt toplamak
 
 Örnek çıktı:
 
 ```
   🔴  env-committed (2)
-     2024-09-12 a3f81de alice: .env.local
-     2024-11-01 9c1d2bb bob:   .env.production
+     2024-09-12 a3f81de ali: .env.local
+     2024-11-01 9c1d2bb veli: .env.production
 
   🟠  protected-touched (5)
      2025-02-04 4d8e7a1 ai-bot: prisma/migrations/20240204_drop_users/migration.sql
@@ -524,21 +533,23 @@ Git geçmişinde riskli pattern'leri tarar. Kullanım senaryoları:
 
 ---
 
-## AI Güvenlik Skoru
+## Yapay Zekâ Güvenlik Puanı
 
-`repo-seatbelt`, "AI-dostu" sinyali veren bir kontrol listesine göre reponuzu puanlar:
+`repo-seatbelt`, "yapay zekâya hazır" olduğunuzu gösteren bir kontrol listesine göre
+reponuzu puanlar:
 
-| Aralık | Hüküm | Anlam |
-|--------|-------|-------|
-| **80 – 100** | 🟢 AI Güvenli | Sağlam korumalar. Çoğu ajan sorumlu davranır. |
-| **60 – 79** | 🟡 Dikkat gerek | Bazı risk alanları — uzun AI oturumundan önce inceleyin. |
-| **40 – 59** | 🟠 Riskli | Önemli boşluklar. `doctor` çalıştırın ve aksiyon planını izleyin. |
-| **0 – 39** | 🔴 AI'a Hazır Değil | `init` çalıştırmadan ajanları serbest bırakmayın. |
+| Aralık | Hüküm | Anlamı |
+|--------|-------|--------|
+| **80 – 100** | 🟢 Güvenli | Sağlam korumalar var. Çoğu ajan sorumlu davranır. |
+| **60 – 79** | 🟡 Dikkat gerekli | Birkaç risk alanı var — uzun bir oturumdan önce gözden geçirin. |
+| **40 – 59** | 🟠 Riskli | Önemli boşluklar var. `doctor` çalıştırın ve aksiyon planını izleyin. |
+| **0 – 39** | 🔴 Hazır değil | `init` çalıştırmadan ajanları serbest bırakmayın. |
 
-Skor ağırlıklı kontrol noktalarından hesaplanır (env hijyeni, AI kural dosyaları, riskli
-script'ler, framework riski, monorepo yapısı, …). Detay için `scan --verbose`.
+Puan, ağırlıklı kontrol noktalarından hesaplanır (çevre değişkeni hijyeni, kural dosyası
+varlığı, riskli script'ler, çatı riski, çoklu paket yapısı vb.). Ayrıntı için
+`scan --verbose`.
 
-### Badge ekleyin
+### Rozet ekleyin
 
 ```bash
 npx repo-seatbelt badge
@@ -548,20 +559,20 @@ npx repo-seatbelt badge
 
 ---
 
-## Dashboard & Raporlar
+## Pano & Raporlar
 
 ```bash
 npx repo-seatbelt report     # docs/repo-seatbelt-report.md
 npx repo-seatbelt dashboard  # docs/repo-seatbelt-dashboard.html
 ```
 
-HTML dashboard tamamen statiktir (build adımı yok, JS framework yok) ve skoru, risk
-breakdown'ını, proje bilgisini ve yapılandırılmış korumaları tek bakışta gösterir.
-Dahili dokümantasyonunuza ekleyin veya herhangi bir tarayıcıda lokal açın.
+HTML pano tamamen statiktir (derleme adımı yok, JS çatısı yok); puanı, risk dağılımını,
+proje bilgilerini ve yapılandırılmış korumaları tek bakışta gösterir. Şirket içi
+dokümantasyonunuza ekleyin ya da herhangi bir tarayıcıda yerel olarak açın.
 
 ---
 
-## Konfigürasyon Referansı
+## Yapılandırma Referansı
 
 `.repo-seatbelt.json`:
 
@@ -573,38 +584,38 @@ Dahili dokümantasyonunuza ekleyin veya herhangi bir tarayıcıda lokal açın.
   "projectType": "nextjs",
   "selectedTools": ["claude", "cursor"],
 
-  "protectedFiles": [                 // onay olmadan oku/edit/sil yok
+  "protectedFiles": [                 // onay olmadan oku/düzenle/sil yok
     ".env", ".env.*",
     "prisma/migrations/**",
     "config/credentials.yml.enc"
   ],
 
-  "approvalRequired": [               // edit'ler açık insan onayı gerektirir
+  "approvalRequired": [               // düzenlemeler açık insan onayı ister
     "auth/**", "lib/auth/**",
     "payment/**", "stripe/**",
     "middleware.ts"
   ],
 
-  "blockedCommands": [                // AI'nın reddetmesi gereken komutlar
+  "blockedCommands": [                // ajanın reddetmesi gereken komutlar
     "rm -rf",
     "DROP TABLE",
     "prisma migrate reset",
     "git push --force"
   ],
 
-  "ignoredPaths": [],                 // scanner'ın atladığı glob'lar
-  "riskThresholds": {                 // skor → hüküm eşlemesi
+  "ignoredPaths": [],                 // tarayıcının atladığı desenler
+  "riskThresholds": {                 // puan → hüküm eşlemesi
     "low": 60, "medium": 40, "high": 0
   },
   "presets": ["nextjs-stripe"]
 }
 ```
 
-Elle veya `repo-seatbelt protect` / `repo-seatbelt init` ile düzenleyin.
+Elle ya da `repo-seatbelt protect` / `repo-seatbelt init` ile düzenleyin.
 
 ---
 
-## JSON Çıktı
+## JSON Çıktısı
 
 Her komut script ve CI için `--json` destekler:
 
@@ -616,7 +627,7 @@ repo-seatbelt rules --json | jq '.written[] | .file'
 repo-seatbelt badge --score 92 --json
 ```
 
-Pre-commit hook ve GitHub Action bunu kullanır.
+İşlem öncesi git çengeli ve GitHub Actions iş akışı bu çıktıyı kullanır.
 
 ---
 
@@ -625,27 +636,27 @@ Pre-commit hook ve GitHub Action bunu kullanır.
 ```text
 ┌──────────────────────────────────────────────────────────────┐
 │                  .repo-seatbelt.json                         │
-│         (tek doğru kaynağı — sizin kontratınız)              │
+│        (tek doğruluk kaynağı — sizin sözleşmeniz)            │
 └──────────────────────────────────────────────────────────────┘
             │
-            ├─────────────► Statik generator'lar (init / rules / update)
+            ├─────────────► Sabit üreticiler (init / rules / update)
             │                  ├─ CLAUDE.md
             │                  ├─ AGENTS.md
             │                  ├─ .cursorrules / .windsurfrules
             │                  ├─ CONVENTIONS.md / .clinerules / .rules
             │
-            ├─────────────► Scanner'lar (scan / doctor / diff / audit)
-            │                  ├─ env hijyeni
-            │                  ├─ auth / payment / db tespiti
-            │                  ├─ prod konfig tespiti
-            │                  └─ AI kural varlığı + git geçmişi
+            ├─────────────► Tarayıcılar (scan / doctor / diff / audit)
+            │                  ├─ çevre değişkeni hijyeni
+            │                  ├─ kimlik doğrulama / ödeme / veritabanı tespiti
+            │                  ├─ üretim ayarı tespiti
+            │                  └─ kural dosyası varlığı + git geçmişi
             │
             ├─────────────► Yaptırım katmanı
-            │                  ├─ pre-commit hook (install-hooks)
-            │                  ├─ GitHub Action (ci)
-            │                  └─ watch (otomatik regen)
+            │                  ├─ işlem öncesi git çengeli (install-hooks)
+            │                  ├─ GitHub Actions iş akışı (ci)
+            │                  └─ izleme (otomatik yenileme)
             │
-            └─────────────► MCP server (mcp)
+            └─────────────► MCP sunucusu (mcp)
                                ├─ check_file_access
                                ├─ check_command
                                ├─ list_protections
@@ -654,40 +665,41 @@ Pre-commit hook ve GitHub Action bunu kullanır.
 
 ---
 
-## SSS
+## Sıkça Sorulanlar
 
 <details>
 <summary><b>Bu ajanımı yavaşlatır mı?</b></summary>
 
-Statik kural dosyaları oturum başında bir kez okunur — sıfır runtime maliyeti. MCP
-sunucusu her `check_file_access` çağrısında birkaç milisaniye ekler ki bu tek bir LLM
-token'ına göre ihmal edilebilirdir.
+Sabit kural dosyaları oturum başında bir kez okunur — çalışma anı maliyeti sıfırdır.
+MCP sunucusu her `check_file_access` çağrısında birkaç milisaniye ekler; bu, tek bir
+modelin tek bir tokeniyle kıyaslandığında ihmal edilebilir.
 
 </details>
 
 <details>
-<summary><b>AI bu kuralları aşabilir mi?</b></summary>
+<summary><b>Yapay zekâ bu kuralları aşabilir mi?</b></summary>
 
-Statik kurallar tavsiye niteliğindedir — iyi davranan ajanlar bunlara saygı gösterir. Sert
-yaptırım için **MCP sunucusunu** (karar-anı) **pre-commit hook** (makine-anı) ile birleştirin.
-Hook `--no-verify` ile bypass edilebilir, ama bu denetlenebilir kasıtlı bir insan eylemidir.
+Sabit kurallar tavsiye niteliğindedir — düzgün davranan ajanlar bunlara saygı gösterir.
+Sert yaptırım için **MCP sunucusunu** (karar anı) **işlem öncesi git çengeliyle**
+(makine anı) birlikte kullanın. Çengel `--no-verify` ile geçilebilir, ancak bu
+denetlenebilir, kasıtlı bir insan eylemidir.
 
 </details>
 
 <details>
 <summary><b>Neden CLAUDE.md'yi elle yazmıyorum?</b></summary>
 
-Yazabilirsiniz. Ama `repo-seatbelt` **7 farklı kural dosyasını** tek config'ten senkron
-tutar, bir MCP sunucusu sağlar, CI'yı gateler ve geçmişi audit eder. Proje başına saatler
-tasarrufu.
+Yazabilirsiniz. Ama `repo-seatbelt` **7 farklı kural dosyasını** tek yapılandırmadan
+eşzamanlı tutar, bir MCP sunucusu sağlar, CI'yi denetler ve geçmişi inceler.
+Her proje için saatlerce iş tasarrufu demektir.
 
 </details>
 
 <details>
-<summary><b>JS olmayan projelere?</b></summary>
+<summary><b>Node dışı projelere ne dersiniz?</b></summary>
 
-CLI Node tabanlıdır, ama *ürettiği kurallar* dile bağımsız markdown'dır. Her preset
-(`django`, `rails`, `fastapi`, `expo`, …) Node-dışı stack'ler için.
+Komut satırı aracı Node tabanlıdır, ama *ürettiği kurallar* dilden bağımsız markdown'dır.
+Hazır şablonların çoğu (`django`, `rails`, `fastapi`, `expo`, …) Node dışı yığınlar içindir.
 
 </details>
 
@@ -707,19 +719,19 @@ rm -rf .github/workflows/seatbelt.yml
 
 ## Yol Haritası
 
-- [x] Statik kural generator'ları (Claude, Cursor, AGENTS.md)
-- [x] Windsurf, Aider, Cline, Zed için generator'lar
-- [x] Pre-commit hook installer
-- [x] PR yorumlu GitHub Action generator
-- [x] Watch modu (fs değişikliklerinde otomatik regen)
-- [x] Git-history audit
-- [x] Diff önizlemeli update komutu
-- [x] Proje presetleri (Next.js + Stripe, Django, Rails, Expo, FastAPI, Monorepo)
-- [x] **MCP runtime koruma sunucusu**
-- [x] Her komut için JSON çıktı
-- [ ] VS Code eklentisi (editör-içi uyarılar + dashboard)
-- [ ] Telemetry opt-in (anonim "korumalar X yakaladı" istatistik)
-- [ ] Özel kural plugin'leri
+- [x] Sabit kural üreticileri (Claude, Cursor, AGENTS.md)
+- [x] Windsurf, Aider, Cline, Zed üreticileri
+- [x] İşlem öncesi git çengeli kurucusu
+- [x] PR yorumlu GitHub Actions üreticisi
+- [x] İzleme modu (dosya değişikliklerinde otomatik yenileme)
+- [x] Git geçmişi denetimi
+- [x] Farkı önizlemeli güncelleme komutu
+- [x] Proje hazır şablonları (Next.js + Stripe, Django, Rails, Expo, FastAPI, Monorepo)
+- [x] **Çalışma anı MCP koruma sunucusu**
+- [x] Her komut için JSON çıktısı
+- [ ] VS Code eklentisi (editör içi uyarılar + pano)
+- [ ] İsteğe bağlı telemetri (anonim "korumalar X yakaladı" istatistikleri)
+- [ ] Özel kural eklentileri
 - [ ] Daha fazla dil (Almanca, Fransızca, İspanyolca)
 - [ ] GitLab CI / Bitbucket Pipelines şablonları
 
@@ -727,7 +739,8 @@ rm -rf .github/workflows/seatbelt.yml
 
 ## Katkıda Bulunma
 
-Issue ve PR'lar memnuniyetle karşılanır. Büyük değişiklikler için önce issue açın.
+Sorun bildirimleri ve birleştirme istekleri (PR) memnuniyetle karşılanır. Geniş
+kapsamlı değişiklikler için önce sorun açın.
 
 ```bash
 git clone https://github.com/berkcangumusisik/repo-seatbelt.git
@@ -743,18 +756,18 @@ Tam rehber: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Paylaş
 
-`repo-seatbelt` reponuzu kötü bir AI oturumundan kurtardıysa:
+`repo-seatbelt` reponuzu kötü bir yapay zekâ oturumundan kurtardıysa:
 
 > Claude Code'u kod tabanıma salmadan önce `npx repo-seatbelt scan` çalıştırdım.
-> Haberim olmayan 3 yüksek-risk alan buldum. Sonra MCP sunucusunu ve pre-commit
-> hook'u bağladım — artık ajanım `.env`'e dokunamaz veya `prisma migrate reset`
-> çalıştıramaz. Her AI kodlama oturumundan önce zorunlu olmalı.
+> Haberim olmayan 3 yüksek riskli alan buldum. Sonra MCP sunucusunu ve işlem öncesi
+> çengeli bağladım — artık ajanım `.env`'e dokunamıyor ya da `prisma migrate reset`
+> çalıştıramıyor. Her yapay zekâ kodlama oturumundan önce zorunlu olmalı.
 >
 > github.com/berkcangumusisik/repo-seatbelt
 
 ---
 
-## Star History
+## Yıldız Geçmişi
 
 <a href="https://www.star-history.com/?repos=berkcangumusisik%2Frepo-seatbelt&type=date&legend=bottom-right">
  <picture>
@@ -768,11 +781,11 @@ Tam rehber: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Lisans
 
-[MIT](LICENSE) — kullan, fork'la, üstüne inşa et.
+[MIT](LICENSE) — kullan, çatalla, üzerine inşa et.
 
 <div align="center">
 
-AI ile kod üreten herkes için özenle yapıldı.
-**Bacon'unuzu kurtardıysa repo'yu yıldızlayın. ⭐**
+Yapay zekâ ile kod üreten herkes için özenle yapıldı.
+**İmdadınıza yetiştiyse repoyu yıldızlayın. ⭐**
 
 </div>
