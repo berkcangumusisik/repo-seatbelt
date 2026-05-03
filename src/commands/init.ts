@@ -10,10 +10,12 @@ import { generateClaudeMd } from '../generators/claude-md';
 import { generateAgentsMd } from '../generators/agents-md';
 import { generateCursorRules } from '../generators/cursor-rules';
 import { printHeader } from '../display/renderer';
+import { PRESETS, applyPreset, listPresets } from '../presets';
 
 interface InitOptions {
   lang?: string;
   yes?: boolean;
+  preset?: string;
 }
 
 const AI_TOOLS = [
@@ -181,10 +183,27 @@ export async function initCommand(options: InitOptions): Promise<void> {
     presets: base.presets ?? [],
   };
 
+  // Apply preset (if any)
+  let finalConfig = newConfig;
+  if (options.preset) {
+    const preset = PRESETS[options.preset];
+    if (!preset) {
+      const known = listPresets().map(p => p.name).join(', ');
+      console.log(chalk.red(`  ✗  Unknown preset: ${options.preset}`));
+      console.log(chalk.dim(`     Available: ${known}`));
+      process.exit(1);
+    }
+    finalConfig = applyPreset(newConfig, preset);
+    console.log(chalk.cyan(`  ▸ Preset applied: ${preset.title}`));
+  }
+
   // Deduplicate arrays
-  newConfig.protectedFiles = [...new Set(newConfig.protectedFiles)];
-  newConfig.approvalRequired = [...new Set(newConfig.approvalRequired)];
-  newConfig.blockedCommands = [...new Set(newConfig.blockedCommands)];
+  finalConfig.protectedFiles = [...new Set(finalConfig.protectedFiles)];
+  finalConfig.approvalRequired = [...new Set(finalConfig.approvalRequired)];
+  finalConfig.blockedCommands = [...new Set(finalConfig.blockedCommands)];
+
+  // Reassign for rest of function
+  Object.assign(newConfig, finalConfig);
 
   // Write config
   const spinner = ora({ text: chalk.dim(t('init.creating')), spinner: 'dots', color: 'cyan' }).start();

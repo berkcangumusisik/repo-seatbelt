@@ -4,7 +4,8 @@
   "description": "A safety layer for AI coding agents before they touch your repo.",
   "main": "dist/cli.js",
   "bin": {
-    "repo-seatbelt": "dist/cli.js"
+    "repo-seatbelt": "dist/cli.js",
+    "repo-seatbelt-mcp": "dist/mcp/server.js"
   },
   "files": [
     "dist",

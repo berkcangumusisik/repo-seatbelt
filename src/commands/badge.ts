@@ -9,6 +9,7 @@ import { printHeader } from '../display/renderer';
 interface BadgeOptions {
   lang?: string;
   score?: string;
+  json?: boolean;
 }
 
 function getShieldsBadgeUrl(score: number, label: string, color: string): string {
@@ -43,7 +44,7 @@ export async function badgeCommand(options: BadgeOptions): Promise<void> {
   const lang = ((options.lang as Lang) || config?.language || 'en') as Lang;
   setLang(lang);
 
-  printHeader(t('badge.title'));
+  if (!options.json) printHeader(t('badge.title'));
 
   let score: number;
 
@@ -54,7 +55,7 @@ export async function badgeCommand(options: BadgeOptions): Promise<void> {
       return;
     }
   } else {
-    const spinner = ora({
+    const spinner = options.json ? null : ora({
       text: chalk.dim('Running scan to get score...'),
       spinner: 'dots',
       color: 'cyan',
@@ -62,11 +63,12 @@ export async function badgeCommand(options: BadgeOptions): Promise<void> {
 
     try {
       const result = await runScan(cwd);
-      spinner.stop();
+      if (spinner) spinner.stop();
       score = result.score;
     } catch {
-      spinner.stop();
-      console.log(chalk.yellow(`  ⚠  ${t('badge.noScanFound')}`));
+      if (spinner) spinner.stop();
+      if (options.json) console.log(JSON.stringify({ error: 'no-scan' }));
+      else console.log(chalk.yellow(`  ⚠  ${t('badge.noScanFound')}`));
       return;
     }
   }
@@ -74,21 +76,26 @@ export async function badgeCommand(options: BadgeOptions): Promise<void> {
   const label = getBadgeLabel(score, lang);
   const color = getBadgeColor(score);
   const url = getShieldsBadgeUrl(score, label, color);
+  const markdownEarly = `![${label}](${url})`;
+  const htmlEarly = `<img src="${url}" alt="${label}" />`;
+
+  if (options.json) {
+    console.log(JSON.stringify({ score, label, color, url, markdown: markdownEarly, html: htmlEarly }, null, 2));
+    return;
+  }
 
   console.log();
   console.log(chalk.bold(`  ${t('badge.badgeText')}`));
   console.log();
 
   // Markdown badge
-  const markdown = `![${label}](${url})`;
   console.log(chalk.white(`  Markdown:`));
-  console.log(chalk.cyan(`  ${markdown}`));
+  console.log(chalk.cyan(`  ${markdownEarly}`));
   console.log();
 
   // HTML badge
-  const html = `<img src="${url}" alt="${label}" />`;
   console.log(chalk.white(`  HTML:`));
-  console.log(chalk.cyan(`  ${html}`));
+  console.log(chalk.cyan(`  ${htmlEarly}`));
   console.log();
 
   // Direct URL
