@@ -9,6 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-%230f172a?labelColor=%231e293b&style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-%230f172a?labelColor=%231e293b&style=flat-square)](package.json)
 [![MCP Ready](https://img.shields.io/badge/MCP-ready-%2310b981?labelColor=%231e293b&style=flat-square)](#mcp-server--runtime-guardrails)
+[![berkcangumusisik/repo-seatbelt MCP server](https://glama.ai/mcp/servers/berkcangumusisik/repo-seatbelt/badges/score.svg)](https://glama.ai/mcp/servers/berkcangumusisik/repo-seatbelt)
 [![Languages](https://img.shields.io/badge/languages-EN%20%2F%20TR-%230f172a?labelColor=%231e293b&style=flat-square)](README.tr.md)
 
 <br/>
