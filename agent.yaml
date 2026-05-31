@@ -1,0 +1,45 @@
+spec_version: "0.1.0"
+name: repo-seatbelt
+version: 1.1.0
+description: >
+  A four-layer safety system for AI coding agents. repo-seatbelt scans your
+  repository, detects risky areas, and generates safety rule files for 8 AI
+  tools (Claude Code, Cursor, Codex, Gemini CLI, Windsurf, Aider, Cline, Zed).
+  It also exposes a live MCP guardrail server agents call at decision-time, a
+  pre-commit hook that blocks high-risk commits locally, and a GitHub Action CI
+  gate that posts an AI Safety Score on every PR. One command, every guardrail.
+author: berkcangumusisik
+license: MIT
+
+model:
+  preferred: anthropic:claude-sonnet-4-6
+  constraints:
+    temperature: 0.2
+
+skills:
+  - scan
+  - init
+  - rules
+  - protect
+  - check-command
+  - install-hooks
+  - ci
+  - mcp
+  - doctor
+  - diff
+  - audit
+  - watch
+
+runtime:
+  max_turns: 30
+  timeout: 120
+
+compliance:
+  risk_tier: standard
+  supervision:
+    human_in_the_loop: destructive
+    kill_switch: true
+  recordkeeping:
+    audit_logging: true
+  data_governance:
+    pii_handling: redact
